@@ -1,0 +1,14 @@
+﻿@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using Admin.Core.Model.Admin;
+
+namespace @{@razorInfo.NameSpace}.Repository.@razorInfo.Name
+{
+    /// <summary>
+    /// @razorInfo.Description
+    /// </summary>
+    public partial interface I@{@razorInfo.Name}Repository : IRepositoryBase<@{@razorInfo.Name}Entity>
+    {
+    }
+}

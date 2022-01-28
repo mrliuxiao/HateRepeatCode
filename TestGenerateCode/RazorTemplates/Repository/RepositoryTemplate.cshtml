@@ -1,0 +1,17 @@
+﻿@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using Admin.Core.Model.Admin;
+
+namespace @{@razorInfo.NameSpace}.Repository.@razorInfo.Name
+{
+    /// <summary>
+    /// @razorInfo.Description
+    /// </summary>
+    public class @{@razorInfo.Name}Repository : RepositoryBase<@{@razorInfo.Name}Entity>,I@{@razorInfo.Name}Repository
+    {
+        public @{@razorInfo.Name}Repository(MyUnitOfWorkManager muowm) : base(muowm)
+        {
+        }
+    }
+}

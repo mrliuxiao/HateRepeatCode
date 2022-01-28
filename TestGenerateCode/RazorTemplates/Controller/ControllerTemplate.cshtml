@@ -1,0 +1,92 @@
+﻿@using HateRepeatTool;
+@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using Admin.Core.Common.Input;
+using Admin.Core.Common.Output;
+using Admin.Core.Model.Admin;
+using @{@razorInfo.NameSpace}.Service.@{@razorInfo.Scope}.@razorInfo.Name;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
+namespace @{@razorInfo.NameSpace}.Controllers.@razorInfo.Scope
+{
+    /// <summary>
+    /// @razorInfo.Description
+    /// </summary>
+    public class @{@razorInfo.Name}Controller : AreaController
+    {
+        private readonly I@{@razorInfo.Name}Service _@{@razorInfo.Name.ToStartUpper()}Service;
+
+        public @{@razorInfo.Name}Controller(I@{@razorInfo.Name}Service @{@razorInfo.Name.ToStartUpper()}Service)
+        {
+            _@{@razorInfo.Name.ToStartUpper()}Service = @{@razorInfo.Name.ToStartUpper()}Service;
+        }
+
+        /// <summary>
+        /// 查询单条数据字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IResponseOutput> Get(long id)
+        {
+            return await _@{@razorInfo.Name.ToStartUpper()}Service.GetAsync(id);
+        }
+
+        /// <summary>
+        /// 查询分页数据字典
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IResponseOutput> GetPage(PageInput<@{@razorInfo.Name}Entity> model)
+        {
+            return await _@{@razorInfo.Name.ToStartUpper()}Service.PageAsync(model);
+        }
+
+        /// <summary>
+        /// 新增数据字典
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IResponseOutput> Add(@{@razorInfo.Name}AddInput input)
+        {
+            return await _@{@razorInfo.Name.ToStartUpper()}Service.AddAsync(input);
+        }
+
+        /// <summary>
+        /// 修改数据字典
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IResponseOutput> Update(@{@razorInfo.Name}UpdateInput input)
+        {
+            return await _@{@razorInfo.Name.ToStartUpper()}Service.UpdateAsync(input);
+        }
+
+        /// <summary>
+        /// 删除数据字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<IResponseOutput> SoftDelete(long id)
+        {
+            return await _@{@razorInfo.Name.ToStartUpper()}Service.SoftDeleteAsync(id);
+        }
+
+        /// <summary>
+        /// 批量删除数据字典
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IResponseOutput> BatchSoftDelete(long[] ids)
+        {
+            return await _@{@razorInfo.Name.ToStartUpper()}Service.BatchSoftDeleteAsync(ids);
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using System;
+
+namespace @{@razorInfo.NameSpace}.Service.@{@razorInfo.Scope}.@razorInfo.Name
+{
+    /// <summary>
+    /// 添加
+    /// </summary>
+    public class @{@razorInfo.Name}AddInput
+    {
+        @foreach (var item in razorInfo.Columns)
+        {
+            if (item.Name == "Id" || item.Name == "Version") { continue; }
+@:        /// <summary>
+@:        /// @item.Description
+@:        /// </summary>
+@:        public @item.Type @item.Name { get; set; }
+       }
+    }
+}

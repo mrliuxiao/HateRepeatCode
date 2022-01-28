@@ -1,0 +1,99 @@
+﻿@using HateRepeatTool;
+@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using Admin.Core.Common.Input;
+using Admin.Core.Common.Output;
+using Admin.Core.Model.Admin;
+using Admin.Core.Repository.Admin;
+using System.Threading.Tasks;
+
+namespace @{@razorInfo.NameSpace}.Service.@{@razorInfo.Scope}.@razorInfo.Name
+{
+    public class @{@razorInfo.Name}Service : BaseService, I@{@razorInfo.Name}Service
+    {
+        private readonly I@{@razorInfo.Name}Repository _@{@razorInfo.Name.ToStartUpper()}Repository;
+
+        public @{@razorInfo.Name}Service(I@{@razorInfo.Name}Repository @{@razorInfo.Name.ToStartUpper()}Repository)
+        {
+            _@{@razorInfo.Name.ToStartUpper()}Repository = @{@razorInfo.Name.ToStartUpper()}Repository;
+        }
+
+        public async Task<IResponseOutput> GetAsync(long id)
+        {
+            var result = await _@{@razorInfo.Name.ToStartUpper()}Repository.GetAsync<@{@razorInfo.Name}GetOutput>(id);
+            return ResponseOutput.Ok(result);
+        }
+
+        public async Task<IResponseOutput> PageAsync(PageInput<@{@razorInfo.Name}Entity> input)
+        {
+            var key = input.Filter?.Name;
+            var @{@razorInfo.Name.ToStartUpper()}TypeId = input.Filter?.@{@razorInfo.Name}TypeId;
+            var list = await _@{@razorInfo.Name.ToStartUpper()}Repository.Select
+            .WhereIf(@{@razorInfo.Name.ToStartUpper()}TypeId.HasValue && @{@razorInfo.Name.ToStartUpper()}TypeId.Value > 0, a => a.@{@razorInfo.Name}TypeId == @{@razorInfo.Name.ToStartUpper()}TypeId)
+            .WhereIf(key.NotNull(), a => a.Name.Contains(key) || a.Code.Contains(key))
+            .Count(out var total)
+            .OrderByDescending(true, c => c.Id)
+            .Page(input.CurrentPage, input.PageSize)
+            .ToListAsync<@{@razorInfo.Name}ListOutput>();
+
+            var data = new PageOutput<@{@razorInfo.Name}ListOutput>()
+            {
+                List = list,
+                Total = total
+            };
+
+            return ResponseOutput.Ok(data);
+        }
+
+        public async Task<IResponseOutput> AddAsync(@{@razorInfo.Name}AddInput input)
+        {
+            var @{@razorInfo.Name.ToStartUpper()} = Mapper.Map<@{@razorInfo.Name}Entity>(input);
+            var id = (await _@{@razorInfo.Name.ToStartUpper()}Repository.InsertAsync(@{@razorInfo.Name.ToStartUpper()})).Id;
+            return ResponseOutput.Result(id > 0);
+        }
+
+        public async Task<IResponseOutput> UpdateAsync(@{@razorInfo.Name}UpdateInput input)
+        {
+            if (!(input?.Id > 0))
+            {
+                return ResponseOutput.NotOk();
+            }
+
+            var entity = await _@{@razorInfo.Name.ToStartUpper()}Repository.GetAsync(input.Id);
+            if (!(entity?.Id > 0))
+            {
+                return ResponseOutput.NotOk("数据字典不存在！");
+            }
+
+            Mapper.Map(input, entity);
+            await _@{@razorInfo.Name.ToStartUpper()}Repository.UpdateAsync(entity);
+            return ResponseOutput.Ok();
+        }
+
+        public async Task<IResponseOutput> DeleteAsync(long id)
+        {
+            var result = false;
+            if (id > 0)
+            {
+                result = (await _@{@razorInfo.Name.ToStartUpper()}Repository.DeleteAsync(m => m.Id == id)) > 0;
+            }
+
+            return ResponseOutput.Result(result);
+        }
+
+        public async Task<IResponseOutput> SoftDeleteAsync(long id)
+        {
+            var result = await _@{@razorInfo.Name.ToStartUpper()}Repository.SoftDeleteAsync(id);
+
+            return ResponseOutput.Result(result);
+        }
+
+        public async Task<IResponseOutput> BatchSoftDeleteAsync(long[] ids)
+        {
+            var result = await _@{@razorInfo.Name.ToStartUpper()}Repository.SoftDeleteAsync(ids);
+
+            return ResponseOutput.Result(result);
+        }
+    }
+}

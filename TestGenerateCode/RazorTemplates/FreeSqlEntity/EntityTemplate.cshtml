@@ -1,0 +1,27 @@
+﻿@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using System;
+using FreeSql.DataAnnotations;
+
+namespace @{@razorInfo.NameSpace}.Model.@{@razorInfo.Scope}.@razorInfo.Name
+{
+    /// <summary>
+    /// 添加
+    /// </summary>
+    
+   @razorInfo.Attribute
+    public class @{@razorInfo.Name}Entity
+    {
+        @foreach (var item in razorInfo.Columns)
+        {
+@:        /// <summary>
+@:        /// @item.Description
+@:        /// </summary>
+@:        @item.Attribute
+@:        public @item.EntityType @item.Name { get; set; }
+       }
+    }
+
+    @razorInfo.MySqlEnumSet
+}

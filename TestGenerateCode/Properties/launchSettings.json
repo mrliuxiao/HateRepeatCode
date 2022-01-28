@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TestGenerateCode": {
+      "commandName": "Project",
+      "workingDirectory": "./",
+      "nativeDebugging": false
+    }
+  }
+}

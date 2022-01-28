@@ -1,0 +1,20 @@
+﻿@{
+    var razorInfo = Model as HateRepeatTool.RazorInfo;
+}
+using Admin.Core.Model.Admin;
+using AutoMapper;
+
+namespace @{@razorInfo.NameSpace}.Service.@{@razorInfo.Scope}.@razorInfo.Name
+{
+    /// <summary>
+    /// 映射配置
+    /// </summary>
+    public class MapConfig : Profile
+    {
+        public MapConfig()
+        {
+            CreateMap<@{@razorInfo.Name}AddInput, @{@razorInfo.Name}Entity>();
+            CreateMap<@{@razorInfo.Name}UpdateInput, @{@razorInfo.Name}Entity>();
+        }
+    }
+}
